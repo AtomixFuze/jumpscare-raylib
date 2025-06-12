@@ -1,15 +1,22 @@
+# Compiler and flags
 CC      := gcc
 CFLAGS  := -O3 -mwindows
-LDFLAGS := 
-LDLIBS  := -lraylib -lgdi32 -lwinmm
 
-TARGET := build/video.exe
-BUILD_SRCS = build/main.c build/video.c build/sound.c
+ifeq ($(OS),Windows_NT)
+	EXE     := .exe
+	LDLIBS  := -lraylib -lgdi32 -lwinmm
+else
+	EXE     :=
+	LDLIBS  := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+endif
+
+TARGET      := build/video$(EXE)
+BUILD_SRCS  := build/main.c build/video.c build/sound.c
 
 all: prepare $(TARGET) run
 
 $(TARGET): $(BUILD_SRCS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 build/sound.c: res/sound.wav | prepare
 	( echo "#include \"sound.h\"" ; xxd -n sound_wav -i $< ) > $@
@@ -22,7 +29,7 @@ prepare:
 	cp src/* build/
 
 run: $(TARGET)
-	./build/video.exe
+	./$(TARGET)
 
 clean:
 	rm -rf build
