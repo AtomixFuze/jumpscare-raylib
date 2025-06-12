@@ -1,13 +1,14 @@
 # Compiler and flags
 CC      := gcc
-CFLAGS  := -O3 -mwindows
 
 ifeq ($(OS),Windows_NT)
 	EXE     := .exe
 	LDLIBS  := -lraylib -lgdi32 -lwinmm
+	CFLAGS  := -O3 -mwindows
 else
 	EXE     :=
 	LDLIBS  := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+	CFLAGS  := -O3
 endif
 
 TARGET      := build/video$(EXE)
