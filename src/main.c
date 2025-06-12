@@ -5,8 +5,6 @@
 #include "video.h" // video_gif, video_gif_len
 #include "sound.h" // sound_wav, sound_wav_len
 
-#define TEXTURE_WIDTH 1024
-#define TEXTURE_HEIGHT 768
 #define FRAME_DELAY 3
 
 int main() {
@@ -34,7 +32,7 @@ int main() {
     
     Texture2D texture = LoadTextureFromImage(gif);
 
-    float scale = (float)screenWidth / TEXTURE_WIDTH;
+    float scale = (float)screenWidth / gif.width;
     Vector2 position = {0, 0};
 
     // warm up
@@ -57,7 +55,7 @@ int main() {
             }
             EndDrawing();
         }
-        UpdateTexture(texture, (unsigned char*)gif.data + TEXTURE_HEIGHT * TEXTURE_WIDTH * 4 * frame);
+        UpdateTexture(texture, (unsigned char*)gif.data + gif.height * gif.width * 4 * frame);
     }
 
     // play sound for just a bit longer
