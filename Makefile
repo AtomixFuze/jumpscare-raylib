@@ -1,4 +1,3 @@
-# Compiler and flags
 CC      := gcc
 
 ifeq ($(OS),Windows_NT)
